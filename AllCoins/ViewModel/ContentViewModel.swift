@@ -9,7 +9,7 @@ import Foundation
 class ContentViewModel: ObservableObject {
     @Published var coins = [Coin]()
     @Published var errorMessage: String = ""
-    private let cryptoCoinsService = CryptoCoinsService()
+    private let coinDataService = CoinDataService()
     init() {
         Task { await getCoinsData() }
     }
@@ -17,7 +17,7 @@ class ContentViewModel: ObservableObject {
     @MainActor
     func getCoinsData()  async {
         do {
-            let coins = try await self.cryptoCoinsService.fetchCoins()
+            let coins = try await self.coinDataService.fetchCoins()
             self.coins = coins
         } catch {
             self.errorMessage = error.localizedDescription
@@ -30,7 +30,7 @@ class ContentViewModel: ObservableObject {
 
 extension ContentViewModel {
     func getCoinsDataWithCompletionHandler() {
-        cryptoCoinsService.fetchCoinsWithCompletionHandler {[weak self] result in
+        coinDataService.fetchCoinsWithCompletionHandler {[weak self] result in
             switch result {
             case .success(let coins):
                 self?.coins = coins

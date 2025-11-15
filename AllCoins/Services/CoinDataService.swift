@@ -7,12 +7,13 @@
 
 import Foundation
 
-class CryptoCoinsService {
+class CoinDataService {
     
     private let BASE_URL = "https://api.coingecko.com/api/v3/coins/"
     
     var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
     }
+    private var detailsUrlCoin: String { return "\(BASE_URL)bitcoin?localization=false" }
     
     // Async Await call
     
@@ -32,11 +33,30 @@ class CryptoCoinsService {
             return []
         }
     }
+    
+    // Coin details Call
+    func fetchCoinDetails(id: String) async throws -> CoinDetails? {
+        guard let url = URL(string: detailsUrlCoin) else {
+            return nil
+        }
+        
+        let (data, responce) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponce = responce as? HTTPURLResponse, httpResponce.statusCode == 200 else {
+            throw  CoinError.serverError
+        }
+        do {
+            let coinDetails = try JSONDecoder().decode(CoinDetails.self, from: data)
+            return coinDetails
+        } catch {
+            return nil
+        }
+    }
 }
 
 
 // Mark - Completion Handler
-extension CryptoCoinsService {
+extension CoinDataService {
     
     func fetchCoinsWithCompletionHandler(complition: @escaping (Result<[Coin], CoinError>) -> Void) {
         guard let url = URL(string: urlString) else {

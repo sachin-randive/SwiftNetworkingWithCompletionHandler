@@ -21,7 +21,7 @@ struct ContentView: View {
             .navigationTitle(Text("Live Prices"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Coin.self) { coin in
-                    CoinDetailsView()
+                    CoinDetailsView(coin: coin)
             }
 //            .overlay(content: {
 //                if let errorMessage = viewModel.errorMessage {
