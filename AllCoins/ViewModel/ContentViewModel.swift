@@ -6,24 +6,24 @@
 //
 
 import Foundation
-@MainActor
 class ContentViewModel: ObservableObject {
     @Published var coins = [Coin]()
+    @Published var errorMessage: String = ""
     private let cryptoCoinsService = CryptoCoinsService()
     init() {
-        getCoinsData()
-    }
-    func getCoinsData() {
-        Task {
-            do {
-                let coins = try await self.cryptoCoinsService.fetchCoins()
-                self.coins = coins
-            } catch {
-                print("DEBUG: Failed to fetch coins: \(error)")
-            }
-        }
+        Task { await getCoinsData() }
     }
     
+    @MainActor
+    func getCoinsData()  async {
+        do {
+            let coins = try await self.cryptoCoinsService.fetchCoins()
+            self.coins = coins
+        } catch {
+            self.errorMessage = error.localizedDescription
+            print("DEBUG: Failed to fetch coins: \(error.localizedDescription)")
+        }
+    }
 }
 
 // Mark - Completion Handler Clouser call

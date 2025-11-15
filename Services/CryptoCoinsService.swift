@@ -17,8 +17,20 @@ class CryptoCoinsService {
     // Async Await call
     
     func fetchCoins() async throws -> [Coin] {
-        let (data, _) = try await URLSession.shared.data(from: URL(string: urlString)!)
-        return try JSONDecoder().decode([Coin].self, from: data)
+        guard let url = URL(string: urlString) else {
+            return []
+        }
+        
+        let (data, responce) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponce = responce as? HTTPURLResponse, httpResponce.statusCode == 200 else {
+            throw  CoinError.serverError
+        }
+        do {
+            return try JSONDecoder().decode([Coin].self, from: data)
+        } catch {
+            return []
+        }
     }
 }
 

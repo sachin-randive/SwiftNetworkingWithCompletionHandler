@@ -15,6 +15,9 @@ struct ContentView: View {
                 ForEach(viewModel.coins) { coin in
                    CoinRowView(coin: coin)
                 }
+                if viewModel.coins.isEmpty {
+                    Text("Debugg: No data available :\(viewModel.errorMessage)")
+                }
             }
             .navigationTitle(Text("Live Prices"))
             //.navigationBarTitleDisplayMode(.inline)
