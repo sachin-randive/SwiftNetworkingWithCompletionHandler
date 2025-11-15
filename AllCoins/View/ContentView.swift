@@ -8,19 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel: ContentViewModel = .init()
+    @StateObject private var viewModel = ContentViewModel() //: ContentViewModel = .init()
     var body: some View {
         NavigationStack {
             List {
                 ForEach(viewModel.coins) { coin in
-                   CoinRowView(coin: coin)
-                }
-                if viewModel.coins.isEmpty {
-                    Text("Debugg: No data available :\(viewModel.errorMessage)")
+                    NavigationLink(value: coin) {
+                        CoinRowView(coin: coin)
+                    }
                 }
             }
             .navigationTitle(Text("Live Prices"))
-            //.navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: Coin.self) { coin in
+                    CoinDetailsView()
+            }
+//            .overlay(content: {
+//                if let errorMessage = viewModel.errorMessage {
+//                    Text("Error: \(errorMessage)")
+//                }
+//            })
         }
     }
 }
