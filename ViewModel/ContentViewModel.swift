@@ -9,21 +9,25 @@ import Foundation
 
 class ContentViewModel: ObservableObject {
     @Published var coins = [Coin]()
-    
-    let BASE_URL = "https://api.coingecko.com/api/v3/coins/"
-    
-    var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
-    }
-    
+    private let cryptoCoinsService = CryptoCoinsService()
     init() {
-        fetchCoinsWithURLSession()
+        getCoinsData()
     }
-    
+    func getCoinsData() {
+        cryptoCoinsService.fetchCoins {[weak self] result in
+            switch result {
+            case .success(let coins):
+                self?.coins = coins
+            case .failure(let error):
+                print("DEBUG: Failed to fetch coins: \(error)")
+            }
+        }
+    }
 }
 
 // MARK - URLSession
 
-extension ContentViewModel {
+/*extension ContentViewModel {
     func fetchCoinsWithURLSession() {
         guard let url = URL(string: urlString) else {
             print( "DEBUG: Invalid URL")
@@ -60,3 +64,4 @@ extension ContentViewModel {
         
     }
 }
+*/
