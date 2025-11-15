@@ -14,8 +14,19 @@ class CryptoCoinsService {
     var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
     }
     
-    func fetchCoins(complition: @escaping (Result<[Coin], CoinError>) -> Void) {
-        
+    // Async Await call
+    
+    func fetchCoins() async throws -> [Coin] {
+        let (data, _) = try await URLSession.shared.data(from: URL(string: urlString)!)
+        return try JSONDecoder().decode([Coin].self, from: data)
+    }
+}
+
+
+// Mark - Completion Handler
+extension CryptoCoinsService {
+    
+    func fetchCoinsWithCompletionHandler(complition: @escaping (Result<[Coin], CoinError>) -> Void) {
         guard let url = URL(string: urlString) else {
             print( "DEBUG: Invalid URL")
             return
