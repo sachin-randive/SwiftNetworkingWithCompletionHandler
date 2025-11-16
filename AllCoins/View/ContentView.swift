@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ContentViewModel() //: ContentViewModel = .init()
+    @StateObject private var viewModel = ContentViewModel()
     var body: some View {
         NavigationStack {
             List {
@@ -23,11 +23,6 @@ struct ContentView: View {
             .navigationDestination(for: Coin.self) { coin in
                     CoinDetailsView(coin: coin)
             }
-//            .overlay(content: {
-//                if let errorMessage = viewModel.errorMessage {
-//                    Text("Error: \(errorMessage)")
-//                }
-//            })
         }
     }
 }

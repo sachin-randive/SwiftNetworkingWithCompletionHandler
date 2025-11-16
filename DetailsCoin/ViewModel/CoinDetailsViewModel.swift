@@ -18,7 +18,7 @@ class CoinDetailsViewModel: ObservableObject {
     }
     @MainActor
     func fetchCoinDetails() async {
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+       // try? await Task.sleep(nanoseconds: 2_000_000_000)
        do {
            let details = try await coinDataService.fetchCoinDetails(id: coinId)
            print("Debbug Coin Details:\(String(describing: details))")

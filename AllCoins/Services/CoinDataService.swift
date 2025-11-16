@@ -7,19 +7,15 @@
 
 import Foundation
 
-class CoinDataService {
+protocol HTTPDataDownloader {
+    func fetchData<T: Decodable>(as type: T.Type, endPoint: String) async throws -> T
+}
+
+extension HTTPDataDownloader {
     
-    private let BASE_URL = "https://api.coingecko.com/api/v3/coins/"
-    
-    var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
-    }
-   // private var detailsUrlCoin: String { return "\(BASE_URL)bitcoin?localization=false" }
-    
-    // Async Await call
-    
-    func fetchCoins() async throws -> [Coin] {
-        guard let url = URL(string: urlString) else {
-            return []
+    func fetchData<T: Decodable>(as type: T.Type, endPoint: String) async throws -> T {
+        guard let url = URL(string: endPoint) else {
+            throw CoinError.invalidURL
         }
         
         let (data, responce) = try await URLSession.shared.data(from: url)
@@ -28,36 +24,34 @@ class CoinDataService {
             throw  CoinError.serverError
         }
         do {
-            return try JSONDecoder().decode([Coin].self, from: data)
+            let coinDetails = try JSONDecoder().decode(T.self, from: data)
+            return coinDetails
         } catch {
-            return []
+            throw error as? CoinError ?? .unkown(error)
         }
+        
+    }
+}
+class CoinDataService: HTTPDataDownloader {
+    
+    private let BASE_URL = "https://api.coingecko.com/api/v3/coins/"
+    // Async Await call
+    func fetchCoins() async throws -> [Coin] {
+        var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
+        }
+        return try await fetchData(as: [Coin].self, endPoint: urlString)
     }
     
     // Coin details Call
     func fetchCoinDetails(id: String) async throws -> CoinDetails? {
         var detailsUrlCoin: String { return "\(BASE_URL)\(id)?localization=false" }
-        guard let url = URL(string: detailsUrlCoin) else {
-            return nil
-        }
-        
-        let (data, responce) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponce = responce as? HTTPURLResponse, httpResponce.statusCode == 200 else {
-            throw  CoinError.serverError
-        }
-        do {
-            let coinDetails = try JSONDecoder().decode(CoinDetails.self, from: data)
-            return coinDetails
-        } catch {
-            return nil
-        }
+        return try await fetchData(as: CoinDetails?.self, endPoint: detailsUrlCoin)
     }
 }
 
 
-// Mark - Completion Handler
-extension CoinDataService {
+// Mark - Completion Handler Logic Now skipped
+/*extension CoinDataService {
     
     func fetchCoinsWithCompletionHandler(complition: @escaping (Result<[Coin], CoinError>) -> Void) {
         guard let url = URL(string: urlString) else {
@@ -94,3 +88,4 @@ extension CoinDataService {
         
     }
 }
+*/

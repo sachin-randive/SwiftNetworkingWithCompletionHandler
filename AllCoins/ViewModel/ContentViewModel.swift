@@ -27,7 +27,7 @@ class ContentViewModel: ObservableObject {
 }
 
 // Mark - Completion Handler Clouser call
-
+/*
 extension ContentViewModel {
     func getCoinsDataWithCompletionHandler() {
         coinDataService.fetchCoinsWithCompletionHandler {[weak self] result in
@@ -40,3 +40,4 @@ extension ContentViewModel {
         }
     }
 }
+*/
