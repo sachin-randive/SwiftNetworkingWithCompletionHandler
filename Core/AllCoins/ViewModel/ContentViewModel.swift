@@ -17,7 +17,7 @@ class ContentViewModel: ObservableObject {
     @MainActor
     func getCoinsData()  async {
         do {
-            let coins = try await self.coinDataService.fetchCoins()
+            let coins = try await self.coinDataService.fetchAllCoins()
             self.coins = coins
         } catch {
             self.errorMessage = error.localizedDescription
@@ -26,7 +26,7 @@ class ContentViewModel: ObservableObject {
     }
 }
 
-// Mark - Completion Handler Clouser call
+// Mark - Completion Handler Clouser call Now Skipped
 /*
 extension ContentViewModel {
     func getCoinsDataWithCompletionHandler() {
