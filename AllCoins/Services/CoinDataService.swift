@@ -13,7 +13,7 @@ class CoinDataService {
     
     var urlString: String { return "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
     }
-    private var detailsUrlCoin: String { return "\(BASE_URL)bitcoin?localization=false" }
+   // private var detailsUrlCoin: String { return "\(BASE_URL)bitcoin?localization=false" }
     
     // Async Await call
     
@@ -36,6 +36,7 @@ class CoinDataService {
     
     // Coin details Call
     func fetchCoinDetails(id: String) async throws -> CoinDetails? {
+        var detailsUrlCoin: String { return "\(BASE_URL)\(id)?localization=false" }
         guard let url = URL(string: detailsUrlCoin) else {
             return nil
         }

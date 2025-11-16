@@ -15,7 +15,22 @@ struct CoinDetailsView: View {
         self.viewModel = CoinDetailsViewModel(coinId: "\(coin.id)")
     }
     var body: some View {
-        Text("Coins deatils view: \(coin.name)")
+            VStack(alignment: .leading) {
+               if let details = viewModel.coinDetails {
+                   Text("\(details.name)")
+                       .font(.subheadline)
+                       .fontWeight(.semibold)
+                   Text("\(details.symbol)")
+                       .font(.footnote)
+                   Text("\(details.description.text)")
+                       .padding(.vertical)
+                }
+            }
+            .task {
+               await viewModel.fetchCoinDetails()
+            }
+            .padding()
+            Spacer()
     }
 }
 
