@@ -18,10 +18,18 @@ class CoinDataService: HTTPDataDownloader {
     
     //Mark - Async Await call -> Coin details
     func fetchCoinDetails(id: String) async throws -> CoinDetails? {
+        
+        if let cachedData = CoinDetailsCache.shared.coinDetails(for: id) {
+            print( "Data fetched from cache for coin id: \(id)")
+            return cachedData
+        }
         guard let endPointString = coinDetailsURLString(id: id) else {
             throw CoinError.invalidURL
         }
-        return try await fetchData(as: CoinDetails?.self, endPoint: endPointString)
+        let details = try await fetchData(as: CoinDetails.self, endPoint: endPointString)
+        CoinDetailsCache.shared.setCoinDetails(details, for: id)
+        print( "Data fetched from API for coin id: \(id)")
+        return details
     }
     
     // Base Url
