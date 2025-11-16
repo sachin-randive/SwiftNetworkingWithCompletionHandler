@@ -4,3 +4,4 @@ Advanced Networking Architecture,
 Unit Testing,
 Pagination & Loading Images.
 ![alt text](CryptoCoinsAPIApp/Assets.xcassets/CoinsPage.imageset/CoinsPage.png)
+<img src="CryptoCoinsAPIApp/Assets.xcassets/CoinsPage.imageset/CoinsPage.png" width="48">
