@@ -13,7 +13,7 @@ import SwiftUI
 struct CryptoCoinsAPIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(service: CoinDataService())
         }
     }
 }

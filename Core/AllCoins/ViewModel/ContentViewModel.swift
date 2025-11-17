@@ -9,15 +9,16 @@ import Foundation
 class ContentViewModel: ObservableObject {
     @Published var coins = [Coin]()
     @Published var errorMessage: String = ""
-    private let coinDataService = CoinDataService()
-    init() {
+    private let service: CoinServiceProtocol
+    init(service: CoinServiceProtocol) {
+        self.service = service
         Task { await getCoinsData() }
     }
     
     @MainActor
     func getCoinsData()  async {
         do {
-            let coins = try await self.coinDataService.fetchAllCoins()
+            let coins = try await self.service.fetchAllCoins()
             self.coins = coins
         } catch {
             self.errorMessage = error.localizedDescription

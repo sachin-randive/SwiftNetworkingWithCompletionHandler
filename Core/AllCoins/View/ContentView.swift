@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ContentViewModel()
+    @StateObject private var viewModel: ContentViewModel
+    private let service: CoinServiceProtocol
+    init(service: CoinServiceProtocol) {
+        self.service = service
+        self._viewModel = StateObject(wrappedValue: ContentViewModel(service: service))
+    }
+    
+    
     var body: some View {
         NavigationStack {
             List {
@@ -21,12 +28,12 @@ struct ContentView: View {
             .navigationTitle(Text("Live Prices"))
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: Coin.self) { coin in
-                    CoinDetailsView(coin: coin)
+                CoinDetailsView(coin: coin, service: service)
             }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(service: CoinDataService())
 }

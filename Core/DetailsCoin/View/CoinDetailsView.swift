@@ -10,9 +10,9 @@ import SwiftUI
 struct CoinDetailsView: View {
     let coin: Coin
     @ObservedObject var viewModel: CoinDetailsViewModel
-    init(coin: Coin) {
+    init(coin: Coin, service: CoinServiceProtocol) {
         self.coin = coin
-        self.viewModel = CoinDetailsViewModel(coinId: "\(coin.id)")
+        self.viewModel = CoinDetailsViewModel(coinId:coin.id, service: service)
     }
     var body: some View {
             VStack(alignment: .leading) {

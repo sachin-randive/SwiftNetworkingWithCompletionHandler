@@ -8,20 +8,22 @@
 import Foundation
 
 class CoinDetailsViewModel: ObservableObject {
-    private let coinDataService = CoinDataService()
+    private let service: CoinServiceProtocol
     private let coinId: String
     @Published var coinDetails: CoinDetails?
     
-    init(coinId: String) {
+    init(coinId: String, service: CoinServiceProtocol) {
+        self.service = service
         self.coinId = coinId
         //Task { await fetchCoinDetails()}
     }
+    
     @MainActor
     func fetchCoinDetails() async {
        // try? await Task.sleep(nanoseconds: 2_000_000_000)
        do {
-           let details = try await coinDataService.fetchCoinDetails(id: coinId)
-           print("Debbug Coin Details:\(String(describing: details))")
+           let details = try await service.fetchCoinDetails(id: coinId)
+         //  print("Debbug Coin Details:\(String(describing: details))")
            self.coinDetails = details
         } catch {
             print("Error fetching coin details: \(error)")
