@@ -74,6 +74,7 @@ class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
 }
 
 
+
 // Mark - Completion Handler Logic Now skipped
 /*extension CoinDataService {
  
