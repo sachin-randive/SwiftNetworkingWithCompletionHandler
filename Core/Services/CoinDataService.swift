@@ -18,7 +18,8 @@ class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
         guard let endPointString = allCoinsURLString else {
             throw CoinError.invalidURL
         }
-        return try await fetchData(as: [Coin].self, endPoint: endPointString)
+        let allCoinsData = try await fetchData(as: [Coin].self, endPoint: endPointString)
+        return allCoinsData
     }
     
     //Mark - Async Await call -> Coin details
@@ -37,7 +38,8 @@ class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
         return details
     }
     
-    // Base Url
+    // Base Url /* https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h */
+    
     private var baseUrlComponents: URLComponents {
         var components = URLComponents()
         components.scheme = "https"
@@ -51,7 +53,7 @@ class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
         components.path += "markets"
         components.queryItems = [.init(name: "vs_currency", value: "usd"),
                                  .init(name: "order", value: "market_cap_desc"),
-                                 .init(name: "per_page", value: "20"),
+                                 .init(name: "per_page", value: "10"),
                                  .init(name: "page", value: "1"),
                                  .init(name: "price_change_percentage", value: "24h")]
         return components.string
