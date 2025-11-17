@@ -18,6 +18,7 @@ class ImageLoader: ObservableObject {
             await self.loadImage()
         }
     }
+    
     @MainActor
     private func loadImage() async {
         if let cachedImage = ImageCache.shared.get(forKey: urlString) {
@@ -33,7 +34,7 @@ class ImageLoader: ObservableObject {
             ImageCache.shared.set(uitImage, forKey: urlString)
             self.image = Image(uiImage: uitImage)
             
-        }catch {
+        } catch {
             print("Debug: Failed to fetch image from URL: \(urlString)")
         }
     }

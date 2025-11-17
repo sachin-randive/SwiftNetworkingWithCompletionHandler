@@ -29,6 +29,7 @@ struct CoinRowView: View {
                     .frame(width: 32, height: 32)
                     .background(Color(.systemGray5))
             }*/
+            
             CoinImageView(url: coin.image)
                 .frame(width: 32, height: 32)
                 .foregroundColor(.orange)
