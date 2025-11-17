@@ -12,7 +12,7 @@ struct Coin: Codable, Identifiable, Hashable {
     let image: String
     let currentPrice: Double
     let marketCapRank: Int
-    let priceChange24H, priceChangePercentage24H: Double
+    let priceChange24H, priceChangePercentage24H: Double?
     
     var imageUrl: URL? {
         return URL(string: image)

@@ -51,10 +51,10 @@ struct CoinRowView: View {
                     .fontWeight(.semibold)
                     .padding(.leading, 4)
                 
-                Text(coin.priceChangePercentage24H.toPercentString())
+                Text(coin.priceChangePercentage24H?.toPercentString() ?? "-500.000")
                     .font(.caption)
                     .padding(.leading, 6)
-                    .foregroundColor(coin.priceChangePercentage24H > 0 ? .green : .red)
+                    .foregroundColor(coin.priceChangePercentage24H ?? -0.55949 > 0 ? .green : .red)
             }
             .padding(.leading, 2)
         }

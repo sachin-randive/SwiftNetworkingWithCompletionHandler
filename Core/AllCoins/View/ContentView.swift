@@ -22,6 +22,11 @@ struct ContentView: View {
                 ForEach(viewModel.coins) { coin in
                     NavigationLink(value: coin) {
                         CoinRowView(coin: coin)
+                            .onAppear {
+                                if coin == viewModel.coins.last {
+                                    Task { await viewModel.getCoinsData()}
+                                }
+                            }
                     }
                 }
             }
@@ -30,6 +35,9 @@ struct ContentView: View {
             .navigationDestination(for: Coin.self) { coin in
                 CoinDetailsView(coin: coin, service: service)
             }
+        }
+        .task {
+            await viewModel.getCoinsData()
         }
     }
 }

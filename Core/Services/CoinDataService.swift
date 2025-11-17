@@ -13,8 +13,13 @@ protocol CoinServiceProtocol {
 }
 
 class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
+    private var page = 0
+    private let fetchLimit = 30
     //Mark - Async Await call -> All Coins
     func fetchAllCoins() async throws -> [Coin] {
+        print( "Debug: page before increment: \(page)")
+        page += 1
+        print( "Debug: page After increment: \(page)")
         guard let endPointString = allCoinsURLString else {
             throw CoinError.invalidURL
         }
@@ -53,8 +58,8 @@ class CoinDataService: HTTPDataDownloader, CoinServiceProtocol {
         components.path += "markets"
         components.queryItems = [.init(name: "vs_currency", value: "usd"),
                                  .init(name: "order", value: "market_cap_desc"),
-                                 .init(name: "per_page", value: "10"),
-                                 .init(name: "page", value: "1"),
+                                 .init(name: "per_page", value: "\(fetchLimit)"),
+                                 .init(name: "page", value: "\(page)"),
                                  .init(name: "price_change_percentage", value: "24h")]
         return components.string
     }

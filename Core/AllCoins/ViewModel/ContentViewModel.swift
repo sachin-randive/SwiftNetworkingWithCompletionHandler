@@ -12,14 +12,14 @@ class ContentViewModel: ObservableObject {
     private let service: CoinServiceProtocol
     init(service: CoinServiceProtocol) {
         self.service = service
-        Task { await getCoinsData() }
+        //Task { await getCoinsData() }
     }
     
     @MainActor
     func getCoinsData()  async {
         do {
             let coins = try await self.service.fetchAllCoins()
-            self.coins = coins
+            self.coins.append(contentsOf: coins)
         } catch {
             self.errorMessage = error.localizedDescription
             print("DEBUG: Failed to fetch coins: \(error.localizedDescription)")
