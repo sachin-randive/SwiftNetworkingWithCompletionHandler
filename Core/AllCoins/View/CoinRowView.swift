@@ -18,7 +18,7 @@ struct CoinRowView: View {
                 .foregroundColor(.gray)
             
             //image
-            AsyncImage(url: URL(string: coin.image)!) { image in
+           /* AsyncImage(url: URL(string: coin.image)!) { image in
                 image
                     .resizable()
                     .scaledToFit()
@@ -28,7 +28,10 @@ struct CoinRowView: View {
                 Circle()
                     .frame(width: 32, height: 32)
                     .background(Color(.systemGray5))
-            }
+            }*/
+            CoinImageView(url: coin.image)
+                .frame(width: 32, height: 32)
+                .foregroundColor(.orange)
             
             // coin name info
             VStack(alignment: .leading, spacing: 4) {

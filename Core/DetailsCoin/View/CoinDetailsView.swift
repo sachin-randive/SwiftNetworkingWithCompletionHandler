@@ -17,11 +17,18 @@ struct CoinDetailsView: View {
     var body: some View {
             VStack(alignment: .leading) {
                if let details = viewModel.coinDetails {
-                   Text("\(details.name)")
-                       .font(.subheadline)
-                       .fontWeight(.semibold)
-                   Text("\(details.symbol)")
-                       .font(.footnote)
+                   HStack {
+                       VStack(alignment: .leading) {
+                           Text("\(details.name)")
+                               .font(.subheadline)
+                               .fontWeight(.semibold)
+                           Text("\(details.symbol)")
+                               .font(.footnote)
+                       }
+                       Spacer()
+                       CoinImageView(url: coin.image)
+                           .frame(width: 64, height: 64)
+                   }
                    Text("\(details.description.text)")
                        .padding(.vertical)
                 }
