@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct CoinDetailsView: View {
+    @EnvironmentObject var viewModel: ContentViewModel
     let coin: Coin
-    @ObservedObject var viewModel: CoinDetailsViewModel
-    init(coin: Coin, service: CoinServiceProtocol) {
+//    @ObservedObject var viewModel: CoinDetailsViewModel
+   // init(coin: Coin, service: CoinServiceProtocol) {
+    init(coin: Coin) {
         self.coin = coin
-        self.viewModel = CoinDetailsViewModel(coinId:coin.id, service: service)
+       // self.viewModel = CoinDetailsViewModel(coinId:coin.id, service: service)
     }
     var body: some View {
             VStack(alignment: .leading) {
@@ -34,7 +36,8 @@ struct CoinDetailsView: View {
                 }
             }
             .task {
-               await viewModel.fetchCoinDetails()
+              // await viewModel.fetchCoinDetails()
+                await viewModel.fetchCoinDetails(coinId: coin.id)
             }
             .padding()
             Spacer()
